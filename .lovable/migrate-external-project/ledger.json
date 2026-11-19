@@ -1,0 +1,6 @@
+[
+ {"capability":"code","source":"static index.html/styles.css/script.js","outcome":"ported to TanStack / route","status":"verified","next_action":null},
+ {"capability":"assets","source":"10 images + favicon","outcome":"Lovable assets","status":"verified","next_action":null},
+ {"capability":"database/records/auth/storage/secrets/schedules/webhooks","source":"none detected","outcome":"not applicable","status":"verified","next_action":null},
+ {"capability":"external links","source":"WhatsApp, Instagram","outcome":"preserved","status":"verified","next_action":null}
+]
