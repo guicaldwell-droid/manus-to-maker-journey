@@ -58,3 +58,78 @@
 @media(max-width:1000px){.hero-showcase{min-height:clamp(540px,calc(100svh - 122px),720px)}.hero-showcase__word{font-size:clamp(100px,20vw,230px)}.hero-showcase__dog{width:min(54vw,500px);height:86%}.hero--below .hero__title{font-size:clamp(46px,6vw,66px)}}
 @media(max-width:760px){.hero-showcase{min-height:clamp(520px,calc(92svh - 105px),700px)}.hero-showcase__word{top:44%;font-size:clamp(78px,18.5vw,124px)}.hero-showcase__dog{width:min(97vw,430px);height:79%;bottom:-1%}.hero--below .hero__title{font-size:clamp(47px,13vw,66px);letter-spacing:-2.7px;margin-bottom:16px}}
 @media(max-width:380px){.hero--below .hero__title{font-size:45px}}
+
+/* ===== Refinement layer (Lovable) — type, buttons, glass, scroll handoff ===== */
+:root{
+  --display:'Bricolage Grotesque',sans-serif;
+  --body:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --ease-out:cubic-bezier(.22,.8,.3,1);
+  --focus-ring:0 0 0 3px var(--cream),0 0 0 5px var(--deep);
+}
+body{font-size:16px;line-height:1.6}
+/* Bricolage tops out at 800: cap heavy weights and relax ultra-tight tracking */
+.hero-showcase__word{font-weight:800;letter-spacing:-.06em}
+h1,h2,h3{font-variation-settings:"opsz" 96;text-wrap:balance}
+p{text-wrap:pretty}
+
+/* Mono only for short labels */
+.topline,.eyebrow,.hero__bottom,.choose-card__eyebrow,.care-card__number,.visit-detail__label,.footer__bottom{font-family:var(--mono);font-weight:500}
+.eyebrow{letter-spacing:.1em}
+
+/* Buttons: one consistent, short, calm interaction */
+.button{font-family:var(--body);font-weight:600;font-size:14px;letter-spacing:0;min-height:48px;
+  transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out),background-color .18s var(--ease-out),color .18s var(--ease-out)}
+.button span{transition:transform .18s var(--ease-out)}
+.button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,67,42,.14)}
+.button:hover span{transform:translate(2px,-2px)}
+.button:active{transform:translateY(0) scale(.98);box-shadow:0 2px 6px rgba(15,67,42,.12);transition-duration:.08s}
+.button--primary:hover,.button--dark:hover{background:#123a29}
+.button--nav:hover{background:#8be055}
+.button--cream:hover{background:#e3fb98}
+.text-link{transition:color .18s var(--ease-out)}
+.text-link span{display:inline-block;transition:transform .18s var(--ease-out)}
+.text-link:hover span{transform:translateY(2px)}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:999px}
+.shop a:focus-visible,.visit a:focus-visible{box-shadow:0 0 0 3px #4b2076,0 0 0 5px var(--lime)}
+.visit a:focus-visible{box-shadow:0 0 0 3px var(--deep),0 0 0 5px var(--lime)}
+
+/* Liquid glass — only the floating WhatsApp CTA and the mobile menu panel */
+.whatsapp-float{font-family:var(--body);font-weight:600;font-size:13px;min-height:48px;
+  background:rgba(22,78,52,.78);color:#fff;
+  backdrop-filter:blur(14px) saturate(160%);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 28px rgba(25,75,54,.24);
+  transition:transform .18s var(--ease-out),background-color .18s var(--ease-out)}
+.whatsapp-float:hover{transform:translateY(-2px);background:rgba(22,78,52,.9)}
+.whatsapp-float:active{transform:scale(.97)}
+@media(max-width:760px){
+  .main-nav{background:rgba(255,251,234,.86);backdrop-filter:blur(16px) saturate(150%);
+    border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 18px 40px rgba(25,75,54,.16)}
+  .main-nav a:not(.button){font-size:15px;min-height:44px;display:flex;align-items:center}
+  .whatsapp-float{font-size:12px}
+}
+
+/* Scroll handoff: hero recedes, welcome fades in — never pins or blocks scroll */
+@supports (animation-timeline:view()){
+  @media(prefers-reduced-motion:no-preference){
+    .hero-showcase__word{animation:hero-word-recede 1s linear both;animation-timeline:view(block);animation-range:exit 0% exit 80%}
+    .hero-showcase__dog{animation:hero-dog-recede 1s linear both;animation-timeline:view(block);animation-range:exit 0% exit 100%}
+    @keyframes hero-word-recede{to{opacity:.15;filter:blur(3px)}}
+    @keyframes hero-dog-recede{to{scale:.94;opacity:.6}}
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-showcase__word,.hero-showcase__dog{animation:none!important}
+  .button,.button span,.whatsapp-float{transition:none!important}
+}
+/* Bricolage is narrower than the old face: loosen tracking set for Nunito */
+.hero-showcase__word{letter-spacing:-.045em}
+h2,h3,.hero__title{letter-spacing:-.025em!important}
+.topline,.hero__bottom,.footer__bottom{font-size:11px}
+.eyebrow,.choose-card__eyebrow,.visit-detail__label,.care-card__number{font-size:11px}
+.hero__caption{font-family:var(--body);font-weight:500;font-size:13px}
+@media(max-width:760px){.topline{font-size:9px;letter-spacing:.04em}}
+.choose-card h3{text-transform:none;letter-spacing:-.02em!important;line-height:.95}
+.choose-card p{font-size:14px;line-height:1.45;max-width:58%}
+.category-card__copy p{font-size:13px}
