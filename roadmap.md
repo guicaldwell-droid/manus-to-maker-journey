@@ -1,0 +1,4 @@
+- [ ] Inspecionar o site em desktop e celular e consultar a referência Aura.
+- [ ] Ajustar fontes e CTAs existentes; acrescentar a logo do WhatsApp.
+- [ ] Remover ornamentos e o indicador pequeno da hero, preservando seu rodapé maior e fade.
+- [ ] Conferir aparência, interações e acessibilidade sem publicar.

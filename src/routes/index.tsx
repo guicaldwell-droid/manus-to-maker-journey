@@ -34,18 +34,30 @@ function Index() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const onPointerMove = (e: PointerEvent) => {
+      if (!finePointer.matches || e.pointerType === "touch" || !(e.target instanceof Element)) return;
+      const cta = e.target.closest<HTMLElement>(".button, .text-link, .whatsapp-float");
+      if (!cta) return;
+      const rect = cta.getBoundingClientRect();
+      cta.style.setProperty("--pointer-x", `${e.clientX - rect.left}px`);
+      cta.style.setProperty("--pointer-y", `${e.clientY - rect.top}px`);
+    };
+    document.addEventListener("pointermove", onPointerMove, { passive: true });
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointermove", onPointerMove);
+    };
   }, []);
   return (
     <>
 
-    <div className="scroll-progress" aria-hidden="true"></div>
     <div className="topline">
-      <span className="topline__paw" aria-hidden="true">✳</span>
+      
       <span>A petshop da sua vizinhança</span>
-      <span className="topline__divider" aria-hidden="true"></span>
+      
       <span>Atendimento personalizado</span>
-      <span className="topline__paw" aria-hidden="true">✳</span>
+      
     </div>
 
     <header className="site-header" id="topo">
@@ -84,38 +96,37 @@ function Index() {
         </div>
         <div className="hero__visual">
           <div className="hero__image-wrap"><img src={dogshoppe_hero.url} alt="Cão simpático em um ambiente acolhedor de petshop" loading="lazy" /></div>
-          <div className="hero__caption"><span className="caption-dot"></span> Cuidado de pertinho, com carinho de verdade</div>
-          <svg className="hero__scribble" viewBox="0 0 220 130" fill="none" aria-hidden="true"><path d="M9 94c43-45 58-89 91-79 39 12 13 91 58 74 17-7 31-33 53-55M12 119c46-45 61-82 91-72 38 12 16 73 55 60 16-5 34-25 50-43" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>
+          <div className="hero__caption"> Cuidado de pertinho, com carinho de verdade</div>
         </div>
-        <div className="hero__bottom"><span>BOAS-VINDAS À THE DOG SHOPPE</span><span>CA 5 · BRASÍLIA <span aria-hidden="true">↘</span></span></div>
+        <div className="hero__bottom"><span>Boas-vindas à The Dog Shoppe</span><span>CA 5 · Brasília <span aria-hidden="true">↘</span></span></div>
       </section>
 
       <section className="promise-band" aria-label="O que você encontra na The Dog Shoppe">
-        <div className="promise-band__item"><span className="promise-icon promise-icon--paw" aria-hidden="true">✳</span><span>Petshop de bairro</span></div>
-        <span className="promise-band__asterisk" aria-hidden="true">✳</span>
-        <div className="promise-band__item"><span className="promise-icon promise-icon--heart" aria-hidden="true">♥</span><span>Atendimento personalizado</span></div>
-        <span className="promise-band__asterisk" aria-hidden="true">✳</span>
-        <div className="promise-band__item"><span className="promise-icon promise-icon--spark" aria-hidden="true">✦</span><span>Banho & tosa</span></div>
+        <div className="promise-band__item"><span>Petshop de bairro</span></div>
+        
+        <div className="promise-band__item"><span>Atendimento personalizado</span></div>
+        
+        <div className="promise-band__item"><span>Banho & tosa</span></div>
       </section>
 
       <section className="choose section-pad" id="choose" aria-labelledby="choose-title">
         <div className="choose__heading">
-          <div><p className="eyebrow"><span className="eyebrow__dot"></span> De pertinho, com carinho</p><h2 id="choose-title">Por que escolher<br /><em>a gente?</em></h2></div>
+          <div><p className="eyebrow"> De pertinho, com carinho</p><h2 id="choose-title">Por que escolher<br /><em>a gente?</em></h2></div>
           <p>Um lugar de bairro, um atendimento atencioso e cuidado pensado para fazer parte da rotina de vocês.</p>
         </div>
         <div className="choose__grid">
           <article className="choose-card choose-card--love">
-            <span className="choose-card__eyebrow">01 / TODO DIA</span><span className="choose-card__paw" aria-hidden="true">✳</span>
+            <span className="choose-card__eyebrow">01 / Todo dia</span>
             <h3>Carinho<br />em cada<br />atendimento</h3><p>Um jeito próximo e personalizado de receber você e seu pet.</p>
             <img src={dogshoppe_card_love.url} alt="Cão corgi sorridente representando um atendimento acolhedor" loading="lazy" />
           </article>
           <article className="choose-card choose-card--care">
-            <span className="choose-card__eyebrow">02 / UM MOMENTO SÓ DELE</span><span className="choose-card__paw" aria-hidden="true">✳</span>
+            <span className="choose-card__eyebrow">02 / Um momento só dele</span>
             <h3>Banho &amp;<br />tosa com<br />cuidado</h3><p>Um cuidado caprichado para seu pet se sentir bem.</p>
             <img src={dogshoppe_card_care.url} alt="Retrato de um cão de pelo dourado associado ao banho e tosa" loading="lazy" />
           </article>
           <article className="choose-card choose-card--shop">
-            <span className="choose-card__eyebrow">03 / A LOJA DA VIZINHANÇA</span><span className="choose-card__paw" aria-hidden="true">✳</span>
+            <span className="choose-card__eyebrow">03 / A loja da vizinhança</span>
             <h3>Boas escolhas<br />pra rotina<br />pet</h3><p>Uma conversa com a gente ajuda a encontrar o que você procura.</p>
             <img src={dogshoppe_card_shop.url} alt="Beagle olhando à frente em um recorte para o card da loja pet" loading="lazy" />
           </article>
@@ -124,24 +135,24 @@ function Index() {
 
       <section className="care section-pad" id="servicos" aria-labelledby="care-title">
         <div className="section-heading section-heading--split">
-          <div><p className="eyebrow"><span className="eyebrow__dot"></span> Um momento só dele</p><h2 id="care-title">Dia de se cuidar.<br /><em>Dia de brilhar.</em></h2></div>
+          <div><p className="eyebrow"> Um momento só dele</p><h2 id="care-title">Dia de se cuidar.<br /><em>Dia de brilhar.</em></h2></div>
           <p className="section-heading__text">Um banho gostoso, um cuidado caprichado e o tempo que cada pet precisa. Converse com a nossa equipe para saber mais sobre banho e tosa.</p>
         </div>
         <div className="care-card">
-          <div className="care-card__photo"><img src={dogshoppe_care.url} alt="Cão recebendo escovação delicada durante os cuidados de higiene" loading="lazy" /><span className="care-card__photo-tag"><span>♥</span> Cuidado sem pressa</span></div>
+          <div className="care-card__photo"><img src={dogshoppe_care.url} alt="Cão recebendo escovação delicada durante os cuidados de higiene" loading="lazy" /><span className="care-card__photo-tag">Cuidado sem pressa</span></div>
           <div className="care-card__content">
-            <div className="care-card__number">01 <span>—</span> CUIDADO</div>
+            <div className="care-card__number">01 <span>—</span> Cuidado</div>
             <h3>Um cuidado<br />que começa<br /><em>na confiança.</em></h3>
             <p>Banho e tosa com atenção aos detalhes e um jeitinho acolhedor. Porque cada pet é único — e merece ser tratado assim.</p>
             <a className="button button--dark" href="https://wa.me/5561993351647?text=Ol%C3%A1%21%20Quero%20saber%20mais%20sobre%20banho%20e%20tosa." target="_blank" rel="noreferrer">Pergunte pra gente <span aria-hidden="true">↗</span></a>
-            <span className="care-card__flower" aria-hidden="true">✳</span>
+            
           </div>
         </div>
       </section>
 
       <section className="shop" id="loja" aria-labelledby="shop-title">
         <div className="shop__intro">
-          <p className="eyebrow eyebrow--light"><span className="eyebrow__dot"></span> Achadinhos de quatro patas</p>
+          <p className="eyebrow eyebrow--light"> Achadinhos de quatro patas</p>
           <h2 id="shop-title">A loja que tem<br />um pouco de <em>tudo</em><br />que é bom.</h2>
           <p>Uma seleção para acompanhar a rotina, o passeio e os momentos gostosos do seu pet.</p>
         </div>
@@ -169,21 +180,20 @@ function Index() {
       <section className="about section-pad" id="sobre" aria-labelledby="about-title">
         <div className="about__visual">
           <div className="about__photo"><img src={dogshoppe_about.url} alt="Cão sendo recebido com carinho em uma loja pet" loading="lazy" /></div>
-          <span className="about__doodle" aria-hidden="true">✳</span>
+          
         </div>
-        <div className="about__copy"><p className="eyebrow"><span className="eyebrow__dot"></span> A gente acredita</p><h2 id="about-title">Pet feliz.<br /><em>Tutor tranquilo.</em></h2><p className="about__lead">A The Dog Shoppe é aquele lugar pertinho de casa onde seu pet é recebido com cuidado — e você, com toda a atenção.</p><div className="about-points"><div className="about-point"><span className="about-point__icon" aria-hidden="true">01</span><div><h3>De vizinho pra vizinho</h3><p>Proximidade e praticidade para fazer parte da rotina de quem mora por aqui.</p></div></div><div className="about-point"><span className="about-point__icon" aria-hidden="true">02</span><div><h3>Atendimento de verdade</h3><p>Uma conversa atenciosa para entender o que você e seu pet estão procurando.</p></div></div><div className="about-point"><span className="about-point__icon" aria-hidden="true">03</span><div><h3>Um cantinho pet</h3><p>Cuidados e boas escolhas para acompanhar todas as fases e passeios.</p></div></div></div><a className="text-link text-link--green" href="https://www.instagram.com/thedog.shoppe/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span aria-hidden="true">↗</span></a></div>
+        <div className="about__copy"><p className="eyebrow"> A gente acredita</p><h2 id="about-title">Pet feliz.<br /><em>Tutor tranquilo.</em></h2><p className="about__lead">A The Dog Shoppe é aquele lugar pertinho de casa onde seu pet é recebido com cuidado — e você, com toda a atenção.</p><div className="about-points"><div className="about-point"><span className="about-point__icon" aria-hidden="true">01</span><div><h3>De vizinho pra vizinho</h3><p>Proximidade e praticidade para fazer parte da rotina de quem mora por aqui.</p></div></div><div className="about-point"><span className="about-point__icon" aria-hidden="true">02</span><div><h3>Atendimento de verdade</h3><p>Uma conversa atenciosa para entender o que você e seu pet estão procurando.</p></div></div><div className="about-point"><span className="about-point__icon" aria-hidden="true">03</span><div><h3>Um cantinho pet</h3><p>Cuidados e boas escolhas para acompanhar todas as fases e passeios.</p></div></div></div><a className="text-link text-link--green" href="https://www.instagram.com/thedog.shoppe/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span aria-hidden="true">↗</span></a></div>
       </section>
 
       <section className="visit" id="contato" aria-labelledby="visit-title">
-        <div className="visit__backdrop" aria-hidden="true">✳</div>
-        <div className="visit__copy"><p className="eyebrow eyebrow--light"><span className="eyebrow__dot"></span> Estamos por aqui</p><h2 id="visit-title">Passa aqui.<br /><em>Vai ser bom te ver.</em></h2><p>Quer tirar uma dúvida sobre a loja, banho ou tosa? Manda uma mensagem — a gente conversa.</p><a className="button button--cream" href="https://wa.me/5561993351647?text=Ol%C3%A1%21%20Encontrei%20voc%C3%AAs%20pelo%20site." target="_blank" rel="noreferrer">Conversar no WhatsApp <span aria-hidden="true">↗</span></a></div>
-        <div className="visit__details"><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">⌖</span><div><span className="visit-detail__label">NOSSO CANTINHO</span><p>CA 5, Bloco I,<br />lojas 107 e 108</p><span className="visit-detail__sub">Brasília · DF</span></div></div><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">↗</span><div><span className="visit-detail__label">MANDA UM OI</span><a href="https://wa.me/5561993351647" target="_blank" rel="noreferrer">(61) 99335-1647</a><span className="visit-detail__sub">WhatsApp</span></div></div><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">◎</span><div><span className="visit-detail__label">SEGUE A GENTE</span><a href="https://www.instagram.com/thedog.shoppe/" target="_blank" rel="noreferrer">@thedog.shoppe</a><span className="visit-detail__sub">Instagram</span></div></div></div>
+        <div className="visit__copy"><p className="eyebrow eyebrow--light"> Estamos por aqui</p><h2 id="visit-title">Passa aqui.<br /><em>Vai ser bom te ver.</em></h2><p>Quer tirar uma dúvida sobre a loja, banho ou tosa? Manda uma mensagem — a gente conversa.</p><a className="button button--cream" href="https://wa.me/5561993351647?text=Ol%C3%A1%21%20Encontrei%20voc%C3%AAs%20pelo%20site." target="_blank" rel="noreferrer">Conversar no WhatsApp <span aria-hidden="true">↗</span></a></div>
+        <div className="visit__details"><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">⌖</span><div><span className="visit-detail__label">Nosso cantinho</span><p>CA 5, Bloco I,<br />lojas 107 e 108</p><span className="visit-detail__sub">Brasília · DF</span></div></div><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">↗</span><div><span className="visit-detail__label">Manda um oi</span><a href="https://wa.me/5561993351647" target="_blank" rel="noreferrer">(61) 99335-1647</a><span className="visit-detail__sub">WhatsApp</span></div></div><div className="visit-detail"><span className="visit-detail__icon" aria-hidden="true">◎</span><div><span className="visit-detail__label">Segue a gente</span><a href="https://www.instagram.com/thedog.shoppe/" target="_blank" rel="noreferrer">@thedog.shoppe</a><span className="visit-detail__sub">Instagram</span></div></div></div>
       </section>
     </main>
 
     <footer className="footer"><a className="brand brand--footer" href="#topo"><span className="brand__mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 26.2c-4.3 0-9 4.1-9 8.5 0 3.6 3.4 5.2 7.1 4.1 1.2-.4 2.4-.4 3.6 0 3.8 1.1 7.2-.5 7.2-4.1 0-4.4-4.6-8.5-8.9-8.5Z" fill="currentColor"/><ellipse cx="11.4" cy="20.2" rx="4.1" ry="5.6" transform="rotate(-28 11.4 20.2)" fill="currentColor"/><ellipse cx="21.1" cy="14.4" rx="4.1" ry="5.6" transform="rotate(-8 21.1 14.4)" fill="currentColor"/><ellipse cx="31.4" cy="15.7" rx="4.1" ry="5.6" transform="rotate(12 31.4 15.7)" fill="currentColor"/><ellipse cx="39" cy="22.6" rx="4.1" ry="5.6" transform="rotate(33 39 22.6)" fill="currentColor"/></svg></span><span className="brand__type"><strong>the dog</strong><small>SHOPPE · PET & CARE</small></span></a><p className="footer__signoff">Feito com carinho<br />pra quem ama de montão.</p><div className="footer__bottom"><span>© 2026 The Dog Shoppe</span><span>Petshop de vizinhança · Brasília, DF</span><a href="#topo">Voltar ao topo ↑</a></div></footer>
 
-    <a className="whatsapp-float" href="https://wa.me/5561993351647?text=Ol%C3%A1%21%20Encontrei%20voc%C3%AAs%20pelo%20site." target="_blank" rel="noreferrer" aria-label="Fale com a The Dog Shoppe pelo WhatsApp"><span aria-hidden="true">↗</span><span>WhatsApp</span></a>
+    <a className="whatsapp-float" href="https://wa.me/5561993351647?text=Ol%C3%A1%21%20Encontrei%20voc%C3%AAs%20pelo%20site." target="_blank" rel="noreferrer" aria-label="Fale com a The Dog Shoppe pelo WhatsApp"><svg className="whatsapp-float__logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.52 3.48A11.84 11.84 0 0 0 12.04 0C5.46 0 .1 5.35.1 11.93c0 2.1.55 4.15 1.59 5.96L0 24l6.26-1.64a11.96 11.96 0 0 0 5.78 1.47h.01c6.58 0 11.94-5.35 11.95-11.93a11.86 11.86 0 0 0-3.48-8.42ZM12.05 21.82a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.71.97.99-3.62-.24-.37a9.87 9.87 0 0 1-1.52-5.28c0-5.47 4.45-9.91 9.89-9.91 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 0 1 2.9 7.02c0 5.46-4.45 9.87-9.92 9.87Zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.38.2 1.9.12.58-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35Z" /></svg><span>WhatsApp</span></a>
     
     </>
   );

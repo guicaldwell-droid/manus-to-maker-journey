@@ -30,3 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - The original Manus site stylesheet lives verbatim in `src/site.css` and is linked only from the `/` route head; keep page markup using its class names so the imported design stays intact.
+
+- Existing site CTA glow uses one delegated pointer listener and CSS custom coordinates, gated to fine pointers; keep touch interaction independent of hover and avoid extra animation dependencies.
